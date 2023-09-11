@@ -59,7 +59,7 @@ public class Principal {
         funcionarios.add(new Funcionario("Laura", LocalDate.of(1994, 7, 8), new BigDecimal("3017.45"), "Gerente"));
         funcionarios.add(new Funcionario("Heloisa", LocalDate.of(2003, 5, 24), new BigDecimal("1606.85"), "Eletricista"));
         funcionarios.add(new Funcionario("Helena", LocalDate.of(1996, 9, 2), new BigDecimal("2799.93"), "Gerente"));
-
+        
         // 3.2 Remover o funcionário "João" da lista.
         funcionarios = funcionarios.stream()
                 .filter(funcionario -> !funcionario.getNome().equals("João"))
@@ -71,13 +71,13 @@ public class Principal {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         for (Funcionario funcionario : funcionarios) {
             String dataNascimentoFormatada = funcionario.getDataNascimento().format(formatter);
-            String salarioFormatado = funcionario.getSalario().toString().replace(".", ",");
+            String salarioFormatado = formatarValor(funcionario.getSalario());
             System.out.println("Nome: " + funcionario.getNome() +
                     ", Data de Nascimento: " + dataNascimentoFormatada +
                     ", Salário: " + salarioFormatado +
                     ", Função: " + funcionario.getFuncao());
         }
-
+        
         // 3.4 Os funcionários receberam 10% de aumento de salário, atualizar a lista de funcionário com este valor.
         for (Funcionario funcionario : funcionarios) {
             BigDecimal novoSalário = funcionario.getSalario().multiply(new BigDecimal("1.10"));
@@ -94,7 +94,7 @@ public class Principal {
             List<Funcionario> funcionariosDaFuncao = funcionariosPorFuncao.get(funcao);
             System.out.println("Função: " + funcao);
             for (Funcionario funcionario : funcionariosDaFuncao) {
-                String salarioFormatado = funcionario.getSalario().toString().replace(".", ",");
+                String salarioFormatado = formatarValor(funcionario.getSalario());
                 System.out.println("Nome: " + funcionario.getNome() + ", Salário: " + salarioFormatado);
             }
         }
@@ -134,7 +134,7 @@ public class Principal {
         System.out.println("\nFuncionários em Ordem Alfabética:");
         for (Funcionario funcionario : funcionarios) {
             String dataNascimentoFormatada = funcionario.getDataNascimento().format(formatter);
-            String salarioFormatado = funcionario.getSalario().toString().replace(".", ",");
+            String salarioFormatado = formatarValor(funcionario.getSalario());
             System.out.println("Nome: " + funcionario.getNome() +
                     ", Data de Nascimento: " + dataNascimentoFormatada +
                     ", Salário: " + salarioFormatado +
