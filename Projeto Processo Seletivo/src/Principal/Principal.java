@@ -24,29 +24,22 @@ public class Principal {
         funcionarios.add(new Funcionario("Heloisa", LocalDate.of(2003, 5, 24), new BigDecimal("1606.85"), "Eletricista"));
         funcionarios.add(new Funcionario("Helena", LocalDate.of(1996, 9, 2), new BigDecimal("2799.93"), "Gerente"));
         
+        
         // 3.4 Os funcionários receberam 10% de aumento de salário, atualizar a lista de funcionário com este valor.
         for (Funcionario funcionario : funcionarios){
         	BigDecimal novoSalario = funcionario.getSalario().multiply(new BigDecimal("1.10"));
         	funcionario.setSalario(novoSalario);
         }
 
-        // 3.2 Remover o funcionário "João" da lista.
-        funcionarios = funcionarios.stream().filter(funcionario -> !funcionario.getNome() // Perguntar para o tui como essa parte funciona.
-        		.equals("João")).collect(Collectors.toList());
         
-        /*
-        for (Funcionario funcionario : funcionarios) {
-        	String funcionarioNome = funcionario.getNome();
-        	
-        	if ("João".equals(funcionarioNome)) {
-        		funcionarios.remove(funcionario);
-        	}
-        }
-        */
-
+        // 3.2 Remover o funcionário "João" da lista.
+        funcionarios.remove(1);
+        
+        
         // 3.3 Imprimir todos os funcionários com todas suas informações.
         System.out.println("Funcionários:");
         imprimirFuncionarios(funcionarios);
+        
         
         // 3.5 Agrupar os funcionários por função em um MAP, sendo a chave a "função" e o valor a "lista de funcionários".
         Map<String, List<Funcionario>> funcionariosPorFuncao = new HashMap<>();
@@ -61,6 +54,7 @@ public class Principal {
 		    funcionariosPorFuncao.get(funcao).add(funcionario);
 		}	
 
+		
         // 3.6 Imprimir os funcionários por função.
         System.out.println("\nFuncionários Agrupados por Função:");
         		
@@ -73,6 +67,7 @@ public class Principal {
             }
         }
 
+        
         // 3.8 Imprimir funcionários que fazem aniversário no mês 10 ou 12.
         System.out.println("\nFuncionários com Aniversário em Outubro (10) ou Dezembro (12):");
         for (Funcionario funcionario : funcionarios) {
@@ -82,6 +77,7 @@ public class Principal {
             }
         }
 
+        
         // 3.9 Imprimir funcionário com a maior idade.
         LocalDate dataMaisAntiga = LocalDate.of(9999, 12, 31);
         Funcionario funcionarioMaisAntigo = null;
@@ -100,19 +96,14 @@ public class Principal {
             System.out.println("Data de Nascimento: " + dataNascimentoFormatada);
         }
 
+        
         // 3.10 Imprimir a lista de funcionários por ordem alfabética.
-        Collections.sort(funcionarios, (f1, f2) -> f1.getNome().compareTo(f2.getNome())); // Perguntar para o chat como funciona.
+        Collections.sort(funcionarios, (f1, f2) -> f1.getNome().compareTo(f2.getNome()));
 
         System.out.println("\nFuncionários em Ordem Alfabética:");
-        for (Funcionario funcionario : funcionarios) {
-            String dataNascimentoFormatada = formatarData(funcionario.getDataNascimento()); //// Formatacao de data de nascimento de cada funcioanrio.
-            String salarioFormatado = formatarValor(funcionario.getSalario()); // Formatacao de salario de cada funcioanario para a moeda real
-            System.out.println("Nome: " + funcionario.getNome() +
-                    ", Data de Nascimento: " + dataNascimentoFormatada +
-                    ", Salário: " + salarioFormatado +
-                    ", Função: " + funcionario.getFuncao());
-        }
-
+        imprimirFuncionarios(funcionarios);
+        
+        
         // 3.11 Imprimir o total dos salários dos funcionários.
         BigDecimal totalSalarios = new BigDecimal("0.0");
 
@@ -120,9 +111,10 @@ public class Principal {
             totalSalarios = totalSalarios.add(funcionario.getSalario());
         }
 
-        String totalSalariosFormatado = formatarValor(totalSalarios); // Formatcao salario para a moeda real.
+        String totalSalariosFormatado = formatarValor(totalSalarios);
 
         System.out.println("\nTotal dos Salários dos Funcionários: " + totalSalariosFormatado);
+        
 
         // 3.12 Imprimir quantos salários mínimos ganha cada funcionário, considerando que o salário mínimo é R$1212.00.
         BigDecimal salarioMinimo = new BigDecimal("1212.00");
