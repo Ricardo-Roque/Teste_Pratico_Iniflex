@@ -1,53 +1,17 @@
 package Principal;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.text.NumberFormat;
 
-
-class Pessoa {
-    private String nome;
-    private LocalDate dataNascimento;
-
-    public Pessoa(String nome, LocalDate dataNascimento) {
-        this.nome = nome;
-        this.dataNascimento = dataNascimento;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-}
-
-class Funcionario extends Pessoa {
-    private BigDecimal salario;
-    private String funcao;
-
-    public Funcionario(String nome, LocalDate dataNascimento, BigDecimal salario, String funcao) {
-        super(nome, dataNascimento);
-        this.salario = salario;
-        this.funcao = funcao;
-    }
-
-    public BigDecimal getSalario() {
-        return salario;
-    }
-
-    public String getFuncao() {
-        return funcao;
-    }
-}
-
 public class Principal {
     public static void main(String[] args) {
 
+    	// 3.1 Inserir todos os funcionarios na ordem da tabela.
         List<Funcionario> funcionarios = new ArrayList<>();
         funcionarios.add(new Funcionario("Maria", LocalDate.of(2000, 10, 18), new BigDecimal("2009.44"), "Operador"));
         funcionarios.add(new Funcionario("João", LocalDate.of(1990, 5, 12), new BigDecimal("2284.38"), "Operador"));
@@ -60,41 +24,51 @@ public class Principal {
         funcionarios.add(new Funcionario("Heloisa", LocalDate.of(2003, 5, 24), new BigDecimal("1606.85"), "Eletricista"));
         funcionarios.add(new Funcionario("Helena", LocalDate.of(1996, 9, 2), new BigDecimal("2799.93"), "Gerente"));
         
+        // 3.4 Os funcionários receberam 10% de aumento de salário, atualizar a lista de funcionário com este valor.
+        for (Funcionario funcionario : funcionarios){
+        	BigDecimal novoSalario = funcionario.getSalario().multiply(new BigDecimal("1.10"));
+        	funcionario.setSalario(novoSalario);
+        }
+
         // 3.2 Remover o funcionário "João" da lista.
-        funcionarios = funcionarios.stream()
-                .filter(funcionario -> !funcionario.getNome().equals("João"))
-                .collect(Collectors.toList());
+        funcionarios = funcionarios.stream().filter(funcionario -> !funcionario.getNome() // Perguntar para o tui como essa parte funciona.
+        		.equals("João")).collect(Collectors.toList());
+        
+        /*
+        for (Funcionario funcionario : funcionarios) {
+        	String funcionarioNome = funcionario.getNome();
+        	
+        	if ("João".equals(funcionarioNome)) {
+        		funcionarios.remove(funcionario);
+        	}
+        }
+        */
 
         // 3.3 Imprimir todos os funcionários com todas suas informações.
         System.out.println("Funcionários:");
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        for (Funcionario funcionario : funcionarios) {
-            String dataNascimentoFormatada = funcionario.getDataNascimento().format(formatter);
-            String salarioFormatado = formatarValor(funcionario.getSalario());
-            System.out.println("Nome: " + funcionario.getNome() +
-                    ", Data de Nascimento: " + dataNascimentoFormatada +
-                    ", Salário: " + salarioFormatado +
-                    ", Função: " + funcionario.getFuncao());
-        }
+        imprimirFuncionarios(funcionarios);
         
-        // 3.4 Os funcionários receberam 10% de aumento de salário, atualizar a lista de funcionário com este valor.
-        for (Funcionario funcionario : funcionarios) {
-            BigDecimal novoSalário = funcionario.getSalario().multiply(new BigDecimal("1.10"));
-            funcionario = new Funcionario(funcionario.getNome(), funcionario.getDataNascimento(), novoSalário, funcionario.getFuncao());
-        }
-
         // 3.5 Agrupar os funcionários por função em um MAP, sendo a chave a "função" e o valor a "lista de funcionários".
-        Map<String, List<Funcionario>> funcionariosPorFuncao = funcionarios.stream()
-                .collect(Collectors.groupingBy(Funcionario::getFuncao));
+        Map<String, List<Funcionario>> funcionariosPorFuncao = new HashMap<>();
+
+		for (Funcionario funcionario : funcionarios) {
+		    String funcao = funcionario.getFuncao();
+		
+		    if (!funcionariosPorFuncao.containsKey(funcao)) {
+		        funcionariosPorFuncao.put(funcao, new ArrayList<>());
+		    }
+		
+		    funcionariosPorFuncao.get(funcao).add(funcionario);
+		}	
 
         // 3.6 Imprimir os funcionários por função.
         System.out.println("\nFuncionários Agrupados por Função:");
+        		
         for (String funcao : funcionariosPorFuncao.keySet()) {
             List<Funcionario> funcionariosDaFuncao = funcionariosPorFuncao.get(funcao);
             System.out.println("Função: " + funcao);
             for (Funcionario funcionario : funcionariosDaFuncao) {
-                String salarioFormatado = formatarValor(funcionario.getSalario());
+                String salarioFormatado = formatarValor(funcionario.getSalario()); // Formatacao de salario de cada funcioanario para a moeda real
                 System.out.println("Nome: " + funcionario.getNome() + ", Salário: " + salarioFormatado);
             }
         }
@@ -109,32 +83,30 @@ public class Principal {
         }
 
         // 3.9 Imprimir funcionário com a maior idade.
-        LocalDate dataAtual = LocalDate.now();
         LocalDate dataMaisAntiga = LocalDate.of(9999, 12, 31);
-
         Funcionario funcionarioMaisAntigo = null;
 
         for (Funcionario funcionario : funcionarios) {
             LocalDate dataNascimento = funcionario.getDataNascimento();
-            if (dataNascimento.isBefore(dataMaisAntiga)) {
+            if (dataNascimento.isBefore(dataMaisAntiga)) { // isBefore funcao para dizer que a dataNascimento vem antes da dataMaisAntiga.
                 dataMaisAntiga = dataNascimento;
                 funcionarioMaisAntigo = funcionario;
             }
         }
         if (funcionarioMaisAntigo != null) {
-            String dataNascimentoFormatada = funcionarioMaisAntigo.getDataNascimento().format(formatter);
+            String dataNascimentoFormatada = formatarData(funcionarioMaisAntigo.getDataNascimento()); // Formatacao de data de nascimento de cada funcioanrio.
             System.out.println("\nFuncionário mais antigo:");
             System.out.println("Nome: " + funcionarioMaisAntigo.getNome());
             System.out.println("Data de Nascimento: " + dataNascimentoFormatada);
         }
 
         // 3.10 Imprimir a lista de funcionários por ordem alfabética.
-        Collections.sort(funcionarios, (f1, f2) -> f1.getNome().compareTo(f2.getNome()));
+        Collections.sort(funcionarios, (f1, f2) -> f1.getNome().compareTo(f2.getNome())); // Perguntar para o chat como funciona.
 
         System.out.println("\nFuncionários em Ordem Alfabética:");
         for (Funcionario funcionario : funcionarios) {
-            String dataNascimentoFormatada = funcionario.getDataNascimento().format(formatter);
-            String salarioFormatado = formatarValor(funcionario.getSalario());
+            String dataNascimentoFormatada = formatarData(funcionario.getDataNascimento()); //// Formatacao de data de nascimento de cada funcioanrio.
+            String salarioFormatado = formatarValor(funcionario.getSalario()); // Formatacao de salario de cada funcioanario para a moeda real
             System.out.println("Nome: " + funcionario.getNome() +
                     ", Data de Nascimento: " + dataNascimentoFormatada +
                     ", Salário: " + salarioFormatado +
@@ -142,13 +114,13 @@ public class Principal {
         }
 
         // 3.11 Imprimir o total dos salários dos funcionários.
-        BigDecimal totalSalarios = BigDecimal.ZERO;
+        BigDecimal totalSalarios = new BigDecimal("0.0");
 
         for (Funcionario funcionario : funcionarios) {
             totalSalarios = totalSalarios.add(funcionario.getSalario());
         }
 
-        String totalSalariosFormatado = formatarValor(totalSalarios);
+        String totalSalariosFormatado = formatarValor(totalSalarios); // Formatcao salario para a moeda real.
 
         System.out.println("\nTotal dos Salários dos Funcionários: " + totalSalariosFormatado);
 
@@ -157,12 +129,28 @@ public class Principal {
 
         System.out.println("\nQuantidade de Salários Mínimos que Cada Funcionário Ganha:");
         for (Funcionario funcionario : funcionarios) {
-            BigDecimal salariosMinimos = funcionario.getSalario().divide(salarioMinimo, 2, BigDecimal.ROUND_HALF_UP);
+            BigDecimal salariosMinimos = funcionario.getSalario().divide(salarioMinimo, 2, RoundingMode.CEILING); 
             System.out.println("Nome: " + funcionario.getNome() + ", Salários Mínimos: " + salariosMinimos);
         }
     }
 
+    
     private static String formatarValor(BigDecimal valor) {
         return NumberFormat.getCurrencyInstance().format(valor);
+    }
+    
+    private static void imprimirFuncionarios(List<Funcionario> funcionarios) {
+    	for (Funcionario funcionario : funcionarios) {
+            String dataNascimentoFormatada = formatarData(funcionario.getDataNascimento()); // Formatacao de data de nascimento de cada funcioanrio.
+            String salarioFormatado = formatarValor(funcionario.getSalario()); // Formatacao de salario de cada funcioanario para a moeda real
+            System.out.println("Nome: " + funcionario.getNome() + ", Data de Nascimento: " 
+            		+ dataNascimentoFormatada + ", Salário: " + salarioFormatado + ", Função: " 
+            		+ funcionario.getFuncao());
+        }
+    }  
+    
+    private static String formatarData(LocalDate data) {
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    	return data.format(formatter);
     }
 }
