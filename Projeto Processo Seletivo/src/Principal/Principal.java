@@ -44,12 +44,12 @@ public class Principal {
         Map<String, List<Funcionario>> funcionariosPorFuncao = new HashMap<>();
 
 	for (Funcionario funcionario : funcionarios) {
-		String funcao = funcionario.getFuncao();
+	    String funcao = funcionario.getFuncao();
 		
-		if (!funcionariosPorFuncao.containsKey(funcao)) {
-			funcionariosPorFuncao.put(funcao, new ArrayList<>());
-		    }
-		funcionariosPorFuncao.get(funcao).add(funcionario);
+	    if (!funcionariosPorFuncao.containsKey(funcao)) {
+	        funcionariosPorFuncao.put(funcao, new ArrayList<>());
+	    }
+	    funcionariosPorFuncao.get(funcao).add(funcionario);
 	}	
 
 		
