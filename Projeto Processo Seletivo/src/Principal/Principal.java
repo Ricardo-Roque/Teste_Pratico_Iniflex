@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.text.NumberFormat;
 
 public class Principal {
@@ -33,7 +32,7 @@ public class Principal {
 
         
         // 3.2 Remover o funcionário "João" da lista.
-        funcionarios.remove(1);
+        funcionarios.removeIf(funcionario -> funcionario.getNome() == "João");
         
         
         // 3.3 Imprimir todos os funcionários com todas suas informações.
@@ -130,6 +129,12 @@ public class Principal {
     private static String formatarValor(BigDecimal valor) {
         return NumberFormat.getCurrencyInstance().format(valor);
     }
+     
+    
+    private static String formatarData(LocalDate data) {
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    	return data.format(formatter);
+    }
     
     private static void imprimirFuncionarios(List<Funcionario> funcionarios) {
     	for (Funcionario funcionario : funcionarios) {
@@ -139,10 +144,5 @@ public class Principal {
             		+ dataNascimentoFormatada + ", Salário: " + salarioFormatado + ", Função: " 
             		+ funcionario.getFuncao());
         }
-    }  
-    
-    private static String formatarData(LocalDate data) {
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    	return data.format(formatter);
-    }
+    } 
 }
