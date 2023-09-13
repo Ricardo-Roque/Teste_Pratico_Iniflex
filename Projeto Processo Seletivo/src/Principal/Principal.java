@@ -61,7 +61,7 @@ public class Principal {
             List<Funcionario> funcionariosDaFuncao = funcionariosPorFuncao.get(funcao);
             System.out.println("Função: " + funcao);
             for (Funcionario funcionario : funcionariosDaFuncao) {
-                String salarioFormatado = formatarValor(funcionario.getSalario()); // Formatacao de salario de cada funcioanario para a moeda real
+                String salarioFormatado = formatarValor(funcionario.getSalario()); 
                 System.out.println("Nome: " + funcionario.getNome() + ", Salário: " + salarioFormatado);
             }
         }
@@ -89,7 +89,7 @@ public class Principal {
             }
         }
         if (funcionarioMaisAntigo != null) {
-            String dataNascimentoFormatada = formatarData(funcionarioMaisAntigo.getDataNascimento()); // Formatacao de data de nascimento de cada funcioanrio.
+            String dataNascimentoFormatada = formatarData(funcionarioMaisAntigo.getDataNascimento()); 
             System.out.println("\nFuncionário mais antigo:");
             System.out.println("Nome: " + funcionarioMaisAntigo.getNome());
             System.out.println("Data de Nascimento: " + dataNascimentoFormatada);
