@@ -43,15 +43,14 @@ public class Principal {
         // 3.5 Agrupar os funcionários por função em um MAP, sendo a chave a "função" e o valor a "lista de funcionários".
         Map<String, List<Funcionario>> funcionariosPorFuncao = new HashMap<>();
 
-		for (Funcionario funcionario : funcionarios) {
-		    String funcao = funcionario.getFuncao();
+	for (Funcionario funcionario : funcionarios) {
+		String funcao = funcionario.getFuncao();
 		
-		    if (!funcionariosPorFuncao.containsKey(funcao)) {
-		        funcionariosPorFuncao.put(funcao, new ArrayList<>());
+		if (!funcionariosPorFuncao.containsKey(funcao)) {
+			funcionariosPorFuncao.put(funcao, new ArrayList<>());
 		    }
-		
-		    funcionariosPorFuncao.get(funcao).add(funcionario);
-		}	
+		funcionariosPorFuncao.get(funcao).add(funcionario);
+	}	
 
 		
         // 3.6 Imprimir os funcionários por função.
